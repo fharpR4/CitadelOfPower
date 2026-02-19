@@ -1,0 +1,43 @@
+# Dependencies
+**/node_modules/
+**/.pnpm-store/
+
+# Environment files
+**/.env
+**/.env.local
+**/.env.development
+**/.env.production
+
+# Build outputs
+**/dist/
+**/build/
+**/.next/
+**/out/
+
+# Logs
+**/*.log
+**/npm-debug.log*
+**/pnpm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+**/.DS_Store
+
+# Backend uploads
+backend/uploads/
+!backend/uploads/.gitkeep
+
+# Vercel
+.vercel
+**/.vercel
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
