@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import banner from '../assets/banner.jpeg';
 import { 
   UserGroupIcon, 
   VideoCameraIcon, 
@@ -177,14 +178,14 @@ const HomePage = () => {
               variants={fadeInLeft}
               initial="initial"
               whileInView="animate"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.5 }}
               className="relative"
             >
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1438032005730-c779502df39b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  src={banner} //https://images.unsplash.com/photo-1438032005730-c779502df39b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80
                   alt="Church Worship"
-                  className="w-full h-full object-cover"
+                  className="w-full object-cover" //h-full 
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl">
@@ -199,7 +200,7 @@ const HomePage = () => {
               variants={fadeInRight}
               initial="initial"
               whileInView="animate"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.5 }}
             >
               <span className="text-blue-600 font-semibold text-lg mb-4 block">WHO WE ARE</span>
               <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
@@ -262,8 +263,8 @@ const HomePage = () => {
                     <ClockIcon className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Sunday Worship</h4>
-                    <p className="text-gray-600">8:00 AM • 10:00 AM • 12:00 PM</p>
+                    <h4 className="font-bold text-gray-900">Sunday Worship Service</h4>
+                    <p className="text-gray-600">10:00 AM - 12:00 PM</p>
                   </div>
                 </div>
                 
@@ -272,20 +273,20 @@ const HomePage = () => {
                     <ClockIcon className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">Bible Study</h4>
-                    <p className="text-gray-600">Wednesdays • 6:30 PM - 8:00 PM</p>
+                    <h4 className="font-bold text-gray-900">Online Prayer Meeting</h4>
+                    <p className="text-gray-600">Wednesdays • 9:00 PM</p>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4 bg-white p-4 rounded-xl shadow-sm">
+                {/* <div className="flex items-start gap-4 bg-white p-4 rounded-xl shadow-sm">
                   <div className="bg-blue-100 p-3 rounded-lg">
                     <ClockIcon className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Prayer Meeting</h4>
                     <p className="text-gray-600">Fridays • 5:00 AM (Morning Prayer)</p>
-                  </div>
-                </div>
+                  </div> 
+                </div> */}
               </div>
               
               <Link to="/services" className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all inline-flex items-center gap-2">
