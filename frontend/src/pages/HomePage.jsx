@@ -190,7 +190,7 @@ const HomePage = () => {
               </div>
               <div className="absolute -bottom-6 -right-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl">
                 <UsersIcon className="h-12 w-12 mb-2" />
-                <div className="text-3xl font-bold">500+</div>
+                <div className="text-3xl font-bold">Faithful</div>
                 <div className="text-sm">Active Members</div>
               </div>
             </motion.div>
