@@ -141,12 +141,12 @@ const EVENTS = [
     // Everything marked TODO below is a placeholder, swap it
     // and leave the rest of the structure exactly as is.
     id: 'evt-3',
-    title: 'TODO: Birthday Celebration Name', // e.g. "Sister Grace's Birthday Celebration"
+    title: 'Birthday Celebration', // e.g. "Sister Grace's Birthday Celebration"
     category: 'Sunday Service',
     image: null, // TODO: import photo (see the two commented import lines above) and set it here
     date: '2026-07-19T09:00:00', // TODO: confirm exact date/time if different
     venue: 'Main Sanctuary',
-    description: 'TODO: add a short description once you have it.',
+    description: 'We celebrate all the celebrants in the Lord.',
   },
   // Add more events by copying a block above. Reuse an existing
   // category name to add it to that same group, or type a new
@@ -334,7 +334,7 @@ const EventsPage = () => {
   const [openGroups, setOpenGroups] = useState(() => {
     const initial = {};
     EVENTS.forEach((e) => {
-      initial[e.category || 'Other'] = true;
+      initial[e.category || 'Other'] = false; // Programs start closed, toggle to open
     });
     return initial;
   });
@@ -342,7 +342,7 @@ const EventsPage = () => {
   const [openVideoGroups, setOpenVideoGroups] = useState(() => {
     const initial = {};
     EVENT_VIDEOS.forEach((v) => {
-      initial[v.category || 'Other'] = true;
+      initial[v.category || 'Other'] = true; // Watch Our Services starts open, toggle to close
     });
     return initial;
   });
