@@ -191,6 +191,7 @@ const sortCategories = (categories) =>
 
 const ImageCarousel = ({ images }) => {
   const [index, setIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   if (!images || images.length === 0) return null;
 
@@ -198,42 +199,42 @@ const ImageCarousel = ({ images }) => {
   const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
   const current = images[index];
 
-  return (
-    <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-900">
-      <AnimatePresence mode="wait">
-        <motion.img
-          key={current.id}
-          src={current.url}
-          alt={current.caption || 'Event photo'}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="w-full h-full object-cover"
-        />
-      </AnimatePresence>
-
+  const Controls = ({ large = false }) => (
+    <>
       {images.length > 1 && (
         <>
           <button
-            onClick={prev}
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
             aria-label="Previous photo"
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors"
+            className={`absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors ${
+              large ? 'h-12 w-12' : 'h-9 w-9'
+            }`}
           >
-            <ChevronLeftIcon className="h-5 w-5 text-gray-800" />
+            <ChevronLeftIcon className={large ? 'h-6 w-6 text-gray-800' : 'h-5 w-5 text-gray-800'} />
           </button>
           <button
-            onClick={next}
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
             aria-label="Next photo"
-            className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors"
+            className={`absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors ${
+              large ? 'h-12 w-12' : 'h-9 w-9'
+            }`}
           >
-            <ChevronRightIcon className="h-5 w-5 text-gray-800" />
+            <ChevronRightIcon className={large ? 'h-6 w-6 text-gray-800' : 'h-5 w-5 text-gray-800'} />
           </button>
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
             {images.map((img, i) => (
               <button
                 key={img.id}
-                onClick={() => setIndex(i)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIndex(i);
+                }}
                 aria-label={`Go to photo ${i + 1}`}
                 className={`h-2 rounded-full transition-all ${
                   i === index ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
@@ -243,13 +244,87 @@ const ImageCarousel = ({ images }) => {
           </div>
         </>
       )}
+    </>
+  );
 
-      {current.caption && (
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 pt-8 pb-3">
-          <span className="text-white text-sm font-medium">{current.caption}</span>
-        </div>
-      )}
-    </div>
+  return (
+    <>
+      <div
+        onClick={() => setIsFullscreen(true)}
+        className="relative w-full aspect-video rounded-xl overflow-hidden bg-gray-900 cursor-zoom-in"
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={current.id}
+            src={current.url}
+            alt={current.caption || 'Event photo'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="w-full h-full object-cover"
+          />
+        </AnimatePresence>
+
+        <Controls />
+
+        {current.caption && (
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 pt-8 pb-3">
+            <span className="text-white text-sm font-medium">{current.caption}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Fullscreen lightbox */}
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setIsFullscreen(false)}
+          >
+            <button
+              onClick={() => setIsFullscreen(false)}
+              className="absolute top-5 right-5 text-white hover:text-gray-300 z-10"
+              aria-label="Close photo"
+            >
+              <XMarkIcon className="h-9 w-9" />
+            </button>
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full h-full max-w-6xl flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={current.id}
+                  src={current.url}
+                  alt={current.caption || 'Event photo'}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="max-w-full max-h-full object-contain rounded-lg"
+                />
+              </AnimatePresence>
+
+              <Controls large />
+
+              {current.caption && (
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 px-4 py-2 rounded-full">
+                  <span className="text-white text-sm font-medium">{current.caption}</span>
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -412,9 +487,7 @@ const EventsPage = () => {
                             <PhotoIcon className="h-5 w-5 text-gray-500" />
                             <h4 className="text-sm font-semibold text-gray-700">Photos</h4>
                           </div>
-                          <div className="max-w-2xl">
-                            <ImageCarousel images={groupedImages[category]} />
-                          </div>
+                          <ImageCarousel images={groupedImages[category]} />
                         </div>
                       )}
                     </motion.div>
