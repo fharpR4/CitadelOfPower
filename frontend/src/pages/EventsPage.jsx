@@ -7,8 +7,25 @@ import {
   PlayIcon,
   XMarkIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PhotoIcon,
 } from '@heroicons/react/24/outline';
 import { format, isValid } from 'date-fns';
+
+// Sunday Service / Birthday photos — place these exact files in
+// src/assets/events/ (filenames must match exactly, they're
+// case-sensitive)
+import eventPhoto683 from '../assets/events/IMG_20260724_023044_683.jpg';
+import eventPhoto596 from '../assets/events/IMG_20260724_023044_596.jpg';
+import eventPhoto562 from '../assets/events/IMG_20260724_023044_562.jpg';
+import eventPhoto107 from '../assets/events/IMG_20260724_023044_107.jpg';
+import eventPhoto324 from '../assets/events/IMG_20260724_023044_324.jpg';
+import eventPhoto239 from '../assets/events/IMG_20260724_023044_239.jpg';
+import eventPhoto991 from '../assets/events/IMG_20260724_023043_991.jpg';
+import eventPhoto899 from '../assets/events/IMG_20260724_023043_899.jpg';
+import eventPhoto925 from '../assets/events/IMG_20260724_023043_925.jpg';
+import eventPhoto733 from '../assets/events/IMG_20260724_023044_733.jpg';
 
 // ============================================================
 // EVENT RECORDINGS (hardcoded, no backend needed)
@@ -36,6 +53,45 @@ const EVENT_VIDEOS = [
   { id: '1detp_fLJhgGW4NFOkjRTO1a-wK-3AItT', title: 'Sunday Service Recording 6', category: 'Sunday Service' },
   { id: '1JCLPX4ksDtfT3s2teAVrSu-ZbFJqxktI', title: 'Sunday Service Recording 7', category: 'Sunday Service' },
   { id: '1faKgYesOMcUtJZ2ORVeHnnv4u1JwXL6X', title: 'Sunday Service Recording 8', category: 'Sunday Service' },
+];
+
+// ============================================================
+// EVENT PHOTOS (hardcoded, no backend needed)
+//
+// Same category rule as everything else on this page: give a
+// photo a category and it shows up as a carousel inside that
+// same folder, right under the videos.
+//
+// SKELETON — replace url and caption with the real photo once
+// you have it. Two ways to fill in "url":
+//
+//   A) Drive link: grab the file ID from the share link and
+//      use  https://drive.google.com/thumbnail?id=THE_ID&sz=w1000
+//      (same trick as the videos above, sharing must be
+//      "Anyone with the link")
+//
+//   B) Local file: put the image in src/assets/events/, import
+//      it at the top of this file, and set url to the imported
+//      variable instead of a string.
+// ============================================================
+const EVENT_IMAGES = [
+  { id: 'img-683', url: eventPhoto683, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-596', url: eventPhoto596, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-562', url: eventPhoto562, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-107', url: eventPhoto107, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-324', url: eventPhoto324, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-239', url: eventPhoto239, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-991', url: eventPhoto991, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-899', url: eventPhoto899, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-925', url: eventPhoto925, caption: 'Sunday Service', category: 'Sunday Service' },
+  { id: 'img-733', url: eventPhoto733, caption: 'Sunday Service', category: 'Sunday Service' },
+  // If there was an 11th photo cut off in your file list, add it
+  // here the same way: import it above, then add one more line:
+  // { id: 'img-XXX', url: eventPhotoXXX, caption: 'Sunday Service', category: 'Sunday Service' },
+
+  // Once you know which of these are the birthday shots, just
+  // change their caption to 'Birthday Celebration' so the
+  // carousel labels them correctly.
 ];
 
 // ============================================================
@@ -85,12 +141,12 @@ const EVENTS = [
     // Everything marked TODO below is a placeholder, swap it
     // and leave the rest of the structure exactly as is.
     id: 'evt-3',
-    title: 'Birthday Celebration', // e.g. "Sister Grace's Birthday Celebration"
+    title: 'TODO: Birthday Celebration Name', // e.g. "Sister Grace's Birthday Celebration"
     category: 'Sunday Service',
     image: null, // TODO: import photo (see the two commented import lines above) and set it here
     date: '2026-07-19T09:00:00', // TODO: confirm exact date/time if different
     venue: 'Main Sanctuary',
-    description: 'We celebrate all July Celebrants.',
+    description: 'TODO: add a short description once you have it.',
   },
   // Add more events by copying a block above. Reuse an existing
   // category name to add it to that same group, or type a new
@@ -132,6 +188,70 @@ const sortCategories = (categories) =>
     if (bi === -1) return -1;
     return ai - bi;
   });
+
+const ImageCarousel = ({ images }) => {
+  const [index, setIndex] = useState(0);
+
+  if (!images || images.length === 0) return null;
+
+  const next = () => setIndex((i) => (i + 1) % images.length);
+  const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+  const current = images[index];
+
+  return (
+    <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-900">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current.id}
+          src={current.url}
+          alt={current.caption || 'Event photo'}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="w-full h-full object-cover"
+        />
+      </AnimatePresence>
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            aria-label="Previous photo"
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors"
+          >
+            <ChevronLeftIcon className="h-5 w-5 text-gray-800" />
+          </button>
+          <button
+            onClick={next}
+            aria-label="Next photo"
+            className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors"
+          >
+            <ChevronRightIcon className="h-5 w-5 text-gray-800" />
+          </button>
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {images.map((img, i) => (
+              <button
+                key={img.id}
+                onClick={() => setIndex(i)}
+                aria-label={`Go to photo ${i + 1}`}
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? 'w-6 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {current.caption && (
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 pt-8 pb-3">
+          <span className="text-white text-sm font-medium">{current.caption}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const EventsPage = () => {
   const [activeVideo, setActiveVideo] = useState(null);
@@ -201,6 +321,14 @@ const EventsPage = () => {
     return acc;
   }, {});
   const videoCategoriesPresent = sortCategories(Object.keys(groupedVideos));
+
+  // Group photos by category, so each folder can show its own carousel
+  const groupedImages = EVENT_IMAGES.reduce((acc, image) => {
+    const cat = image.category || 'Other';
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(image);
+    return acc;
+  }, {});
 
   return (
     <div className="section-container">
@@ -276,6 +404,19 @@ const EventsPage = () => {
                           </button>
                         ))}
                       </div>
+
+                      {/* Photos for this same folder, shown as a carousel */}
+                      {groupedImages[category] && groupedImages[category].length > 0 && (
+                        <div className="px-6 pb-6 pt-2">
+                          <div className="flex items-center gap-2 mb-3">
+                            <PhotoIcon className="h-5 w-5 text-gray-500" />
+                            <h4 className="text-sm font-semibold text-gray-700">Photos</h4>
+                          </div>
+                          <div className="max-w-2xl">
+                            <ImageCarousel images={groupedImages[category]} />
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
