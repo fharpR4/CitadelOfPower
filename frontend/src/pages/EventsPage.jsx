@@ -13,19 +13,19 @@ import {
 } from '@heroicons/react/24/outline';
 import { format, isValid } from 'date-fns';
 
-// Sunday Service / Birthday photos — place these exact files in
-// src/assets/events/ (filenames must match exactly, they're
-// case-sensitive)
-import eventPhoto683 from '../assets/events/IMG_20260724_023044_683.jpg';
-import eventPhoto596 from '../assets/events/IMG_20260724_023044_596.jpg';
-import eventPhoto562 from '../assets/events/IMG_20260724_023044_562.jpg';
-import eventPhoto107 from '../assets/events/IMG_20260724_023044_107.jpg';
-import eventPhoto324 from '../assets/events/IMG_20260724_023044_324.jpg';
-import eventPhoto239 from '../assets/events/IMG_20260724_023044_239.jpg';
-import eventPhoto991 from '../assets/events/IMG_20260724_023043_991.jpg';
-import eventPhoto899 from '../assets/events/IMG_20260724_023043_899.jpg';
-import eventPhoto925 from '../assets/events/IMG_20260724_023043_925.jpg';
-import eventPhoto733 from '../assets/events/IMG_20260724_023044_733.jpg';
+// Sunday Service / Birthday photos — these live directly in
+// src/assets/ (not a subfolder), filenames must match exactly,
+// they're case-sensitive
+import eventPhoto683 from '../assets/IMG_20260724_023044_683.jpg';
+import eventPhoto596 from '../assets/IMG_20260724_023044_596.jpg';
+import eventPhoto562 from '../assets/IMG_20260724_023044_562.jpg';
+import eventPhoto107 from '../assets/IMG_20260724_023044_107.jpg';
+import eventPhoto324 from '../assets/IMG_20260724_023044_324.jpg';
+import eventPhoto239 from '../assets/IMG_20260724_023044_239.jpg';
+import eventPhoto991 from '../assets/IMG_20260724_023043_991.jpg';
+import eventPhoto899 from '../assets/IMG_20260724_023043_899.jpg';
+import eventPhoto925 from '../assets/IMG_20260724_023043_925.jpg';
+import eventPhoto733 from '../assets/IMG_20260724_023044_733.jpg';
 
 // ============================================================
 // EVENT RECORDINGS (hardcoded, no backend needed)
